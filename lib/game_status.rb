@@ -28,16 +28,20 @@ WIN_COMBINATIONS = [
 ]
 
 def won?(board)
-winner = []
-empty_board = board.all? {|x| x == " "}
-WIN_COMBINATIONS.each do |sub_array|
-    if empty_board || full?(board)
-      return false
-    elsif sub_array.all? { |value| board[value] =="X" } || sub_array.all? { |value| board[value] =="O" }
-      winner = sub_array
+  WIN_COMBINATIONS.each do |single_win_combo|
+    win_index_1 = single_win_combo[0]
+    win_index_2 = single_win_combo[1]
+    win_index_3 = single_win_combo[2]
+    
+    position_1 = board[win_index_1]
+    position_2 = board[win_index_2]
+    position_3 = board[win_index_3]
+   
+    if position_1 == position_2 && position_2 == position_3 && position_taken?(board, win_index_1)
+      return single_win_combo
     end
   end
-  winner
+  return false
 end
 
 def full?(board)
@@ -45,13 +49,13 @@ def full?(board)
 end
 
 def draw?(board)
-   if !won?(board) && full?(board)
-     return true
-   elsif !won?(board) && !full?(board)
-     return false
-   else won?(board)
-     return false
-   end
+    if !won?(board) && full?(board)
+    return true
+  elsif !won?(board) && !full?(board)
+    return false
+  else won?(board)
+    return false
+  end
 end
 
 def over?(board)
